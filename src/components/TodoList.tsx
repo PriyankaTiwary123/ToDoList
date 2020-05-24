@@ -1,30 +1,27 @@
 import * as React from 'react';
 import CardComponent from '../utility/CardComponent'
 import { Button } from '@material-ui/core';
-import SimpleModal from '../utility/ModalComponent';
-
 
 export const TodoList = () => {
-    const [open, setOpen] = React.useState(false);
+    const [cards, setCards] = React.useState(false);
+    const [cardsArray, setCardsArray] = React.useState([] as any);
 
-    const openPopUp = () => {
-        setOpen(true)
+
+    const addMoreTaskList = () => {
+        setCards(true);
+
+
     }
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     return (
         <div className="container">
+            {console.log("in render")}
             <header>
-                <p>To Do List</p><p><Button variant="contained" color="primary" onClick={openPopUp}>Add ToDolist</Button></p>
+                <p>To Do List</p><p><Button variant="contained" color="primary" onClick={addMoreTaskList}>Add ToDolist</Button></p>
             </header>
             <div className="todo-container">
                 <div className="create-task">
-                    <CardComponent />
-                    <SimpleModal open={open} handleClose={handleClose} />
-                </div>
-                <div className="done-task">
-
+                    <CardComponent cards={cards} />
                 </div>
 
             </div>
