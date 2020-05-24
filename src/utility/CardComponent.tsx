@@ -1,73 +1,87 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import ClearIcon from '@material-ui/icons/Clear';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
-import TextField from '@material-ui/core/TextField';
 
 export default function CardComponent(props: any) {
 
-    const [title, setTitle] = React.useState("");
-    const [desc, setDesc] = React.useState("");
+    const [task, setTaskList] = React.useState("");
+    const [cardCount, setCardCount] = React.useState(1);
     const [taskArray, setTaskListArr] = React.useState([] as any);
+    const [addCard, setAddCard] = React.useState(false);
+    const [markDone ,setMarkAsDone]= React.useState(false);
 
-
-    const getTitle = (e: any) => {
-        setTitle(e.target.value);
-
+    const setTask = (e: any) => {
+        setTaskList(e.target.value);
     }
-    const getDesc = (e: any) => {
-        setDesc(e.target.value)
-    }
+
     const saveTask = () => {
-        taskArray.push({ title: title, desc: desc })
-        setTaskListArr(taskArray);
+        const taskObject: object = { task: task }
+        setTaskListArr([...taskArray, taskObject]);
         console.log(taskArray);
-        setTitle("");
-        setDesc("");
+        setAddCard(true)
+        setCardCount(cardCount + 1);
+        console.log(cardCount)
     }
-  
+
+    const addAnotherCard = () => {
+        setCardCount(cardCount - 1);
+        setAddCard(false);
+        setTaskList("")
+
+    }
+    const cancelCardAddition = () => {
+        setAddCard(true);
+    }
+
+    const deleteCard = (index:number) => {
+       let newTaskArray = taskArray.filter((i:any,id:number) => id !== index);
+        setTaskListArr(newTaskArray);
+    }
+
+    const markAsDone = (index:number) => {
+        setMarkAsDone(true)
+        console.log(index)    
+    }
+
+    const editTaskList=(index:number,task:string)=>{
+        setCardCount(cardCount - 1);
+        setAddCard(false);
+        // let newArr = [...taskArray]
+        // newArr[index]={task:task}
+        // setTaskListArr(newArr);
+
+    }
+
     return (
-        <div className="task-conatiner">
-            <div className="card col col-sm-4 col col-xs-6 col col-md-4">
-                <div className="card-body">
-
-                    <div className="modal-content-title">
-                        <TextField
-                            id="outlined-textarea"
-                            label="Enter Task"
-                            placeholder="Placeholder"
-                            multiline
-                            variant="outlined"
-                            onChange={(e) => getTitle(e)}
-                            value={title}
-                        />
+        <div className="task-conatiner col col-sm-4 col col-xs-6 col col-md-4">
+            {cardCount > 1 || addCard ? taskArray && taskArray.map((element: any,index:number) => {
+                return (<div className={markDone  ? "card  added-card-section-"+index :"card  added-card-section"} key={index}><div className="card-body"><p>{element.task}</p>
+                    <div className="task-list-btns">
+                        <EditIcon  onClick={()=>editTaskList(index,element.task)}></EditIcon>
+                        <DeleteIcon onClick={()=>deleteCard(index)}></DeleteIcon>
+                        <button type="button" className="btn btn-outline-primary" onClick={()=>markAsDone(index)}>Mark Done</button>
                     </div>
-                    <div className="modal-content-body">
-                        <TextField
-                            id="outlined-multiline-static"
-                            label="Enter Task Description"
-                            multiline
-                            rows={4}
-                            variant="outlined"
-                            onChange={(e) => getDesc(e)}
-                            value={desc}
-                        />
-                    </div>
-                    <button type="button" className="btn btn-success" onClick={saveTask}>Save</button>
-                </div>
-            </div>
-            {taskArray.length > 0 && taskArray.forEach((element: any) => {
-                <div className="card col col-sm-4 col col-xs-6 col col-md-4">
+                </div></div>)
+            }) :
+                <div className="card edit-card-section ">
                     <div className="card-body">
-                        <h5 className="card-title">{element.title}</h5>
-                        <p className="card-text">{element.desc}</p>
-                        <EditIcon />
-                        <DeleteIcon />
-                        <Button variant="outlined" color="primary">Mark Done</Button>
+                        <input className="task-detail"
+                            aria-label="maximum height"
+                            placeholder="enter task"
+                            value={task}
+                            onChange={(e) => setTask(e)}
+                        />
                     </div>
-                </div>
 
-            })}
+                </div>}
+            <div className="todo-btns">
+                {addCard ?
+                    <button type="button" className="btn btn-secondary" onClick={addAnotherCard}>Add Another Card</button> :
+                    <div>
+                        <button type="button" className="btn btn-success" onClick={saveTask}>Save</button>
+                        <ClearIcon onClick={cancelCardAddition} /></div>}
+            </div>
 
         </div>
 

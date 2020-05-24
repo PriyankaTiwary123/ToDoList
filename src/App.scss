@@ -1,5 +1,4 @@
 .App{
-    background-color: lightGray;
     height: 100vh;
 }
 .modal-content{
@@ -9,5 +8,31 @@
     margin-top: 20px;
 }
 .task-conatiner{
-    display: flex;
+ padding: 10px;
+  background: lightGray;
+  border-radius: 10px;
 }
+
+.todo-btns{
+    margin: 10px;
+}
+.task-detail{
+    border: none;
+    box-shadow: 2px 2px 2px 2px lightgrey;
+    padding: 10px;
+    /* border: 1px solid lightgray; */
+    width: 100%;
+    border-radius: 5px;  
+}
+.edit-card-section ,.added-card-section{
+     margin-top: 10px;
+}
+.task-list-btns{
+    margin: 10px;
+}
+
+[class^='added-card-section-']{
+ background: lightgrey;
+//  cursor:none
+}
+
