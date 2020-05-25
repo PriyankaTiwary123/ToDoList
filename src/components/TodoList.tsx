@@ -20,9 +20,7 @@ export const TodoList = () => {
                 <p>To Do List</p><p><Button variant="contained" color="primary" onClick={addMoreTaskList}>Add ToDolist</Button></p>
             </header>
             <div className="todo-container">
-                <div className="create-task">
                     <CardComponent cards={cards} />
-                </div>
 
             </div>
         </div>

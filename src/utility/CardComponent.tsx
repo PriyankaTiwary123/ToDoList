@@ -9,17 +9,29 @@ export default function CardComponent(props: any) {
     const [cardCount, setCardCount] = React.useState(1);
     const [taskArray, setTaskListArr] = React.useState([] as any);
     const [addCard, setAddCard] = React.useState(false);
+    const [editText, setEditedText] = React.useState("");
     // const [markDone ,setMarkAsDone]= React.useState(false);
-    const [btnName, setBtnName]= React.useState("");
+    const [btnName, setBtnName] = React.useState("");
 
     const setTask = (e: any) => {
         setTaskList(e.target.value);
+        console.log(e.target.value)
     }
 
     const saveTask = () => {
-        const taskObject: object = { task: task,markAsDone:false ,edited:false}
-        console.log("priyanka",taskArray)
+        const taskObject: any = { task: task, markAsDone: false, edited: false }
+        console.log(taskObject)
+        console.log("priyanka", taskArray)
+        // let editedIndex=taskArray.findIndex((x:any)=>x.edited===true);
+        // console.log(editedIndex)
+        // if(editedIndex!==-1){
+        //    taskArray.splice(editedIndex,1)
+        //    console.log(taskArray)
+        //     setTaskListArr(taskArray)
+        // }
         setTaskListArr([...taskArray, taskObject]);
+        localStorage.setItem('taskArray', JSON.stringify(taskArray))
+        // console.log(localStorage)
         console.log(taskArray);
         setAddCard(true)
         setCardCount(cardCount + 1);
@@ -30,44 +42,47 @@ export default function CardComponent(props: any) {
         setCardCount(cardCount - 1);
         setAddCard(false);
         setTaskList("")
-
     }
     const cancelCardAddition = () => {
         setAddCard(true);
     }
 
-    const deleteCard = (index:number) => {
-       let newTaskArray = taskArray.filter((i:any,id:number) => id !== index);
+    const deleteCard = (index: number) => {
+        let newTaskArray = taskArray.filter((i: any, id: number) => id !== index);
         setTaskListArr(newTaskArray);
     }
 
-    const markAsDone = (element:any,index:number) => {
+    const markAsDone = (element: any, index: number) => {
         console.log(element, index)
-         let tempObj= Object.assign({},element) 
-         tempObj.markAsDone=true;
-         let newTaskArray= taskArray.splice(index,1,tempObj)
-         setTaskListArr([...newTaskArray, tempObj]);
+        let tempObj = Object.assign({}, element)
+        tempObj.markAsDone = true;
+        let newTaskArray = taskArray.splice(index, 1, tempObj)
+        setTaskListArr([...newTaskArray, tempObj]);
 
-        }
+    }
 
-    const editTaskList=(element:any, index:number)=>{
+    const editTaskList = (element: any, index: number) => {
         setCardCount(cardCount - 1);
         setAddCard(false);
-        let tempObj= {...element}
-        tempObj.edited=true;
-        let newEditedArray= taskArray.splice(index,1,tempObj);
-        setTaskListArr([...newEditedArray,tempObj])
-        console.log(newEditedArray)
+        setTaskList(element.task);
+
+        taskArray.splice(index, 1, element);
+        let tempObjEdited = Object.assign({}, element)
+        tempObjEdited.edited = true;
+        // console.log("cggghgjgjghj",newEditedArray)
+        setTaskListArr([...taskArray, tempObjEdited])
+        setEditedText("edited")
+        console.log("aaaa", taskArray)
     }
 
     return (
-        <div className="task-conatiner col col-sm-4 col col-xs-6 col col-md-4">
-            {cardCount > 1 || addCard ? taskArray && taskArray.map((element: any,index:number) => {
-                return (<div className={element.markAsDone  ? "card  added-card-section-"+index :"card  added-card-section"} key={index}><div className="card-body"><p>{element.task}</p>
+        <div className="task-conatiner col col-sm-6 col col-xs-12 col col-md-6">
+            {cardCount > 1 || addCard ? taskArray && taskArray.map((element: any, index: number) => {
+                return (<div className={element.markAsDone ? "card  added-card-section-" + index : "card  added-card-section"} key={index}><div className="card-body"><p>{element.task}</p>
                     <div className="task-list-btns">
-                        <EditIcon  onClick={()=>editTaskList(element,index)}></EditIcon>
-                        <DeleteIcon onClick={()=>deleteCard(index)}></DeleteIcon>
-                        <button type="button" className="btn btn-outline-primary" onClick={()=>markAsDone(element,index)}>Mark Done</button>
+                        <EditIcon onClick={() => editTaskList(element, index)}></EditIcon>
+                        <DeleteIcon onClick={() => deleteCard(index)}></DeleteIcon>
+                        <button type="button" className="btn btn-outline-primary" onClick={() => markAsDone(element, index)}>Mark Done</button>
                     </div>
                 </div></div>)
             }) :

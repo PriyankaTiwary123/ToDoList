@@ -11,6 +11,8 @@
  padding: 10px;
   background: aliceblue;
   border-radius: 10px;
+  max-height: 600px;
+  overflow-y: scroll;
 }
 
 .todo-btns{
@@ -32,10 +34,9 @@
 }
 
 [class*="added-card-section-"]{
-    margin-top: 20px;
+margin-top: 20px;
  background:lightgray!important;
  pointer-events:none;
 
-//  cursor:none
 }
 

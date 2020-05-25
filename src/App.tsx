@@ -1,6 +1,6 @@
 import React from "react";
 import {TodoList} from "./components/TodoList";
-import "./App.scss"
+import "./App.css"
 
 
 const App = () => 
