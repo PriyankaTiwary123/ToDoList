@@ -9,14 +9,16 @@ export default function CardComponent(props: any) {
     const [cardCount, setCardCount] = React.useState(1);
     const [taskArray, setTaskListArr] = React.useState([] as any);
     const [addCard, setAddCard] = React.useState(false);
-    const [markDone ,setMarkAsDone]= React.useState(false);
+    // const [markDone ,setMarkAsDone]= React.useState(false);
+    const [btnName, setBtnName]= React.useState("");
 
     const setTask = (e: any) => {
         setTaskList(e.target.value);
     }
 
     const saveTask = () => {
-        const taskObject: object = { task: task }
+        const taskObject: object = { task: task,markAsDone:false ,edited:false}
+        console.log("priyanka",taskArray)
         setTaskListArr([...taskArray, taskObject]);
         console.log(taskArray);
         setAddCard(true)
@@ -39,28 +41,33 @@ export default function CardComponent(props: any) {
         setTaskListArr(newTaskArray);
     }
 
-    const markAsDone = (index:number) => {
-        setMarkAsDone(true)
-        console.log(index)    
-    }
+    const markAsDone = (element:any,index:number) => {
+        console.log(element, index)
+         let tempObj= Object.assign({},element) 
+         tempObj.markAsDone=true;
+         let newTaskArray= taskArray.splice(index,1,tempObj)
+         setTaskListArr([...newTaskArray, tempObj]);
 
-    const editTaskList=(index:number,task:string)=>{
+        }
+
+    const editTaskList=(element:any, index:number)=>{
         setCardCount(cardCount - 1);
         setAddCard(false);
-        // let newArr = [...taskArray]
-        // newArr[index]={task:task}
-        // setTaskListArr(newArr);
-
+        let tempObj= {...element}
+        tempObj.edited=true;
+        let newEditedArray= taskArray.splice(index,1,tempObj);
+        setTaskListArr([...newEditedArray,tempObj])
+        console.log(newEditedArray)
     }
 
     return (
         <div className="task-conatiner col col-sm-4 col col-xs-6 col col-md-4">
             {cardCount > 1 || addCard ? taskArray && taskArray.map((element: any,index:number) => {
-                return (<div className={markDone  ? "card  added-card-section-"+index :"card  added-card-section"} key={index}><div className="card-body"><p>{element.task}</p>
+                return (<div className={element.markAsDone  ? "card  added-card-section-"+index :"card  added-card-section"} key={index}><div className="card-body"><p>{element.task}</p>
                     <div className="task-list-btns">
-                        <EditIcon  onClick={()=>editTaskList(index,element.task)}></EditIcon>
+                        <EditIcon  onClick={()=>editTaskList(element,index)}></EditIcon>
                         <DeleteIcon onClick={()=>deleteCard(index)}></DeleteIcon>
-                        <button type="button" className="btn btn-outline-primary" onClick={()=>markAsDone(index)}>Mark Done</button>
+                        <button type="button" className="btn btn-outline-primary" onClick={()=>markAsDone(element,index)}>Mark Done</button>
                     </div>
                 </div></div>)
             }) :

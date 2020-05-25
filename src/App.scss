@@ -9,7 +9,7 @@
 }
 .task-conatiner{
  padding: 10px;
-  background: lightGray;
+  background: aliceblue;
   border-radius: 10px;
 }
 
@@ -31,8 +31,11 @@
     margin: 10px;
 }
 
-[class^='added-card-section-']{
- background: lightgrey;
+[class*="added-card-section-"]{
+    margin-top: 20px;
+ background:lightgray!important;
+ pointer-events:none;
+
 //  cursor:none
 }
 
