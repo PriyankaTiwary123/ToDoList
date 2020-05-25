@@ -35,9 +35,9 @@ export default function CardComponent(props: any) {
     React.useEffect(() => {
         localStorage.setItem('taskArray', JSON.stringify(taskArray))
     }, [taskArray])
-    
+
     const getLocalStorageValue = () => {
-        return JSON.parse(localStorage.getItem('taskArray') || '{}')
+        return JSON.parse(localStorage.getItem('taskArray') || '[]')
     }
 
 
