@@ -1,6 +1,9 @@
 .App{
     height: 100vh;
 }
+.container{
+margin: 20px;
+}
 .modal-content{
     line-height: 2;
 }
