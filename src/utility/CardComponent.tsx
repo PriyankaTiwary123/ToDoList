@@ -22,15 +22,20 @@ export default function CardComponent(props: any) {
             tempTaskArray.splice(tempTaskArray.indexOf(editedTask[0]), 1)
         }
         setTaskListArr([...tempTaskArray, taskObject]);
-        localStorage.setItem('taskArray', JSON.stringify(taskArray))
         setAddCard(true)
         setCardCount(cardCount + 1);
     }
+
+  
 
     React.useEffect(() => {
         setTaskListArr(getLocalStorageValue())
     }, [])
 
+    React.useEffect(() => {
+        localStorage.setItem('taskArray', JSON.stringify(taskArray))
+    }, [taskArray])
+    
     const getLocalStorageValue = () => {
         return JSON.parse(localStorage.getItem('taskArray') || '{}')
     }
@@ -41,7 +46,6 @@ export default function CardComponent(props: any) {
         setAddCard(false);
         setTaskList("")
     }
-    
     const cancelCardAddition = () => {
         setAddCard(true);
     }
@@ -53,8 +57,9 @@ export default function CardComponent(props: any) {
 
     const markAsDone = (element: any, index: number) => {
         let tempTaskArray = [...taskArray];
-        tempTaskArray[index].markAsDone=true;
+        tempTaskArray[index].markAsDone = true;
         setTaskListArr(tempTaskArray);
+        localStorage.setItem('taskArray', JSON.stringify(tempTaskArray))
     }
 
     const editTaskList = (element: any, index: number) => {
@@ -62,17 +67,17 @@ export default function CardComponent(props: any) {
         setAddCard(false);
         setTaskList(element.task);
         let tempTaskArray = [...taskArray];
-        tempTaskArray[index].edited=true;
+        tempTaskArray[index].edited = true;
         setTaskListArr(tempTaskArray);
     }
 
     return (
         <div className="task-conatiner col col-sm-6 col col-xs-12 col col-md-6">
-            {taskArray && taskArray.map((element: any, index: number) => {
+            {taskArray && taskArray.length && taskArray.map((element: any, index: number) => {
                 return (<div className={element.markAsDone ? "card  added-card-section-" + index : "card  added-card-section"} key={index}><div className="card-body"><p>{element.task}</p>
                     <div className="task-list-btns row">
-                        <EditIcon  className="col col-3" onClick={() => editTaskList(element, index)}></EditIcon>
-                        <DeleteIcon  className="col col-3"onClick={() => deleteCard(index)}></DeleteIcon>
+                        <EditIcon className="col col-3" onClick={() => editTaskList(element, index)}></EditIcon>
+                        <DeleteIcon className="col col-3" onClick={() => deleteCard(index)}></DeleteIcon>
                         <button type="button" className="btn btn-outline-primary col col-3" onClick={() => markAsDone(element, index)}>Mark Done</button>
                     </div>
                 </div></div>)
